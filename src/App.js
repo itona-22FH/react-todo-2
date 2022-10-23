@@ -7,9 +7,9 @@ const App = () => {
   const [todoEditing, setTodoEditing] = useState(null);
   const [editingText, setEditingText] = useState("");
   const [sortTodos, setSortTodos] = useState([]);
-  const [todoSortNotStarted, setTodoSortNotStarted] = useState(false);
-  const [todoSortProgression, setTodoSortProgression] = useState(false);
-  const [todoSortCompleted, setTodoSortCompleted] = useState(false);
+  const [showNotStartedTodo, setShowNotStartedTodo] = useState(false);
+  const [showProgressionTodo, setShowProgressionTodo] = useState(false);
+  const [showCompletedTodo, setShowCompletedTodo] = useState(false);
 
   const inputOnChange = (e) => {
     setTodo(e.target.value);
@@ -20,11 +20,11 @@ const App = () => {
       return todo.id !== id;
     });
     setTodos(deleteItem);
-    if (todoSortNotStarted) {
+    if (showNotStartedTodo) {
       sortNotStarted(deleteItem);
-    } else if (todoSortProgression) {
+    } else if (showProgressionTodo) {
       sortProgression(deleteItem);
-    } else if (todoSortCompleted) {
+    } else if (showCompletedTodo) {
       sortCompleted(deleteItem);
     }
   };
@@ -64,9 +64,9 @@ const App = () => {
       }
     });
     setSortTodos(notStarted);
-    setTodoSortCompleted(false);
-    setTodoSortNotStarted(true);
-    setTodoSortProgression(false);
+    setShowCompletedTodo(false);
+    setShowNotStartedTodo(true);
+    setShowProgressionTodo(false);
   };
   const sortProgression = (sortTodos) => {
     const progression = sortTodos.filter((todo) => {
@@ -75,9 +75,9 @@ const App = () => {
       }
     });
     setSortTodos(progression);
-    setTodoSortCompleted(false);
-    setTodoSortNotStarted(false);
-    setTodoSortProgression(true);
+    setShowCompletedTodo(false);
+    setShowNotStartedTodo(false);
+    setShowProgressionTodo(true);
   };
   const sortCompleted = (sortTodos) => {
     const todoComplete = sortTodos.filter((todo) => {
@@ -86,9 +86,9 @@ const App = () => {
       }
     });
     setSortTodos(todoComplete);
-    setTodoSortCompleted(true);
-    setTodoSortNotStarted(false);
-    setTodoSortProgression(false);
+    setShowCompletedTodo(true);
+    setShowNotStartedTodo(false);
+    setShowProgressionTodo(false);
   };
 
   return (
@@ -104,7 +104,7 @@ const App = () => {
         <button type="Submit">追加</button>
       </form>
       <ul>
-        {todoSortNotStarted || todoSortProgression || todoSortCompleted ? (
+        {showNotStartedTodo || showProgressionTodo || showCompletedTodo ? (
           <>
             {sortTodos.map((todo) => (
               <li key={todo.id}>
@@ -118,11 +118,11 @@ const App = () => {
                 <select
                   onChange={(e) => {
                     setStatus(todo, e.target.value);
-                    if (todoSortNotStarted) {
+                    if (showNotStartedTodo) {
                       sortNotStarted(todos);
-                    } else if (todoSortProgression) {
+                    } else if (showProgressionTodo) {
                       sortProgression(todos);
-                    } else if (todoSortCompleted) {
+                    } else if (showCompletedTodo) {
                       sortCompleted(todos);
                     }
                   }}
@@ -204,9 +204,9 @@ const App = () => {
       </button>
       <button
         onClick={() => {
-          setTodoSortCompleted(false);
-          setTodoSortProgression(false);
-          setTodoSortNotStarted(false);
+          setShowCompletedTodo(false);
+          setShowProgressionTodo(false);
+          setShowNotStartedTodo(false);
         }}
       >
         すべて
